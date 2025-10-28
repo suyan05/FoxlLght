@@ -13,7 +13,8 @@ public class PlayerBullet : MonoBehaviour
 
     void Update()
     {
-        transform.Translate(Vector3.forward * speed * Time.deltaTime);
+        // 월드 좌표 기준으로 이동
+        transform.position += transform.forward * speed * Time.deltaTime;
     }
 
     void OnTriggerEnter(Collider other)

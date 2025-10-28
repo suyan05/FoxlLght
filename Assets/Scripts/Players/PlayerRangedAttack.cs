@@ -4,22 +4,23 @@ public class PlayerRangedAttack : MonoBehaviour
 {
     public GameObject projectilePrefab;
     public Transform firePoint;
-    public float projectileSpeed = 20f;
+
+    public float fireCooldown = 0.5f;
+    private float lastFireTime;
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(1)) // 우클릭
+        if (Input.GetMouseButtonDown(0) && Time.time >= lastFireTime + fireCooldown)
         {
-            FireProjectile();
+            Fire();
+            lastFireTime = Time.time;
         }
     }
 
-    void FireProjectile()
+    void Fire()
     {
-        GameObject projectile = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
-        Rigidbody rb = projectile.GetComponent<Rigidbody>();
-        rb.velocity = firePoint.forward * projectileSpeed;
-
-        Debug.Log("원거리 공격!");
+        // 탄환 생성 시 회전 고정 + 부모 분리
+        GameObject bullet = Instantiate(projectilePrefab, firePoint.position, firePoint.rotation);
+        bullet.transform.SetParent(null); // 플레이어와의 연결 제거
     }
 }
